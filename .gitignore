@@ -1,0 +1,23 @@
+# Credentials — never commit
+AzureOpeapiKeys.txt
+.env
+
+# Pipeline working directories (may contain PII)
+logs/
+audit/
+review_queue/
+output_json/
+input_pdf/*.pdf
+.checkpoints/
+
+# Generated test fixtures
+tests/fixtures/*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+build/
+dist/
