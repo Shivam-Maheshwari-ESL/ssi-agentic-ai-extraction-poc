@@ -7,8 +7,11 @@ logs/
 audit/
 review_queue/
 output_json/
+output_json_dev/
 input_pdf/*.pdf
+input_pdf_initial_2_pdf/
 .checkpoints/
+*.zip
 
 # Generated test fixtures
 tests/fixtures/*.pdf

@@ -110,13 +110,18 @@ class OcrEngine:
     def run(self, image: Any, *, page: int, offset: BBox | None = None, scale: float = 1.0) -> list[OcrWord]:
         """Recognise one raster, mapping boxes back to page coordinates."""
         engine = self._ensure_engine()
-        raw, _elapsed = engine(image)
-        if not raw:
+        result = engine(image)
+
+        # The modern `rapidocr` package (needed on Python 3.14, since
+        # `rapidocr-onnxruntime` has no build for it) returns a RapidOCROutput
+        # dataclass with .boxes / .txts / .scores rather than the old
+        # (list_of_(box, text, score), elapsed) tuple. .boxes is None when no
+        # text was detected in the image at all.
+        if result is None or result.boxes is None:
             return []
 
         words: list[OcrWord] = []
-        for entry in raw:
-            box, text, score = entry[0], entry[1], entry[2]
+        for box, text, score in zip(result.boxes, result.txts, result.scores):
             if not text or not str(text).strip():
                 continue
             xs = [float(point[0]) for point in box]
